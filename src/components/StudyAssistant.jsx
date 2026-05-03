@@ -44,17 +44,26 @@ export default function StudyAssistant({ contextTitle }) {
 
       const data = await response.json();
       
-      if (data.error) throw new Error(data.error.message);
+      if (data.error) {
+        throw new Error(data.error.message || JSON.stringify(data.error));
+      }
+
+      const aiMessageContent = data?.choices?.[0]?.message?.content;
+      
+      if (!aiMessageContent) {
+        throw new Error("Received an empty or invalid format from the AI provider: " + JSON.stringify(data));
+      }
 
       setMessages(prev => [...prev, { 
         role: 'ai', 
-        content: data.choices[0].message.content 
+        content: aiMessageContent 
       }]);
 
     } catch (error) {
+      console.error("AI Error:", error);
       setMessages(prev => [...prev, { 
         role: 'ai', 
-        content: `Sorry, I encountered an error: ${error.message}. Please check your Netlify API key configuration.` 
+        content: `⚠️ Sorry, I encountered an error: ${error.message}. Please double-check your API Key in Netlify.` 
       }]);
     } finally {
       setIsLoading(false);

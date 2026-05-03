@@ -107,7 +107,7 @@ export default function Layout({ session }) {
               </button>
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-200/50 dark:border-slate-700/50">
                 <UserCircle size={18} className="text-primary-500" />
-                <span>{session?.user?.email?.split('@')[0]}</span>
+                <span>{session?.user?.email?.split('@')?.[0] || 'User'}</span>
               </div>
               <button
                 onClick={handleLogout}

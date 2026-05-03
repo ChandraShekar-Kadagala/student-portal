@@ -15,7 +15,7 @@ const subjects = [
 
 export default function Dashboard({ session }) {
   const [progressData, setProgressData] = useState({});
-  const username = session?.user?.email?.split('@')[0] || 'Student';
+  const username = session?.user?.email?.split('@')?.[0] || 'Student';
 
   useEffect(() => {
     async function loadProgress() {
