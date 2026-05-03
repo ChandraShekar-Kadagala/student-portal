@@ -22,7 +22,7 @@ exports.handler = async function (event, context) {
 
     if (isGemini) {
       // Use Native Gemini REST API
-      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`;
       
       // Convert OpenAI messages format to Gemini format
       const geminiContents = messages.map(msg => ({
