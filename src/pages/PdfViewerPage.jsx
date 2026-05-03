@@ -110,7 +110,6 @@ export default function PdfViewerPage() {
   }
 
   return (
-  return (
     <div className="flex flex-col md:flex-row gap-6 animate-in fade-in duration-500 md:h-[calc(100vh-10rem)]">
       {/* Main Content Area: Header + PDF */}
       <div className="flex-1 flex flex-col gap-4 min-w-0">
