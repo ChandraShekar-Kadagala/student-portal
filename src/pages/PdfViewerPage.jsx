@@ -18,6 +18,8 @@ export default function PdfViewerPage() {
       setSession(session);
     });
   }, []);
+
+  useEffect(() => {
     async function loadMaterial() {
       try {
         const { data, error } = await supabase
