@@ -9,6 +9,7 @@ import clsx from 'clsx';
 const TABS = ['Unit Notes', 'Questions', 'Last Minute'];
 
 const subjectNames = {
+  math: 'Mathematics',
   dsa: 'Data Structures',
   cpp: 'OOPs C++',
   apt: 'Aptitude',

@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, Database, Code2, LineChart, BrainCircuit, ArrowRight } from 'lucide-react';
+import { BookOpen, Database, Code2, LineChart, BrainCircuit, Calculator, ArrowRight } from 'lucide-react';
 
 const subjects = [
+  { code: 'MATH', name: 'Mathematics', icon: Calculator, color: 'from-violet-500 to-purple-500', bg: 'bg-violet-50' },
   { code: 'DSA', name: 'Data Structures', icon: Database, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
   { code: 'CPP', name: 'OOPs C++', icon: Code2, color: 'from-fuchsia-500 to-pink-500', bg: 'bg-fuchsia-50' },
   { code: 'APT', name: 'Aptitude', icon: BrainCircuit, color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50' },
