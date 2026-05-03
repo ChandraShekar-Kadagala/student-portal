@@ -72,20 +72,16 @@ export default function AdminPanel({ session }) {
 
       if (uploadError) throw uploadError;
 
-      // 2. Get Public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('study-materials')
-        .getPublicUrl(filePath);
-
-      // 3. Insert into Database
+      // 2. Insert into Database
       const { error: dbError } = await supabase
         .from('materials')
         .insert([{
-          subject_code: subjectCode.toUpperCase(),
+          subject_id: subjectCode.toUpperCase(),
+          title: file.name.split('.').slice(0, -1).join('.'), // title without extension
           material_type: materialType,
           unit_number: unitNumber ? parseInt(unitNumber) : null,
-          pdf_url: publicUrl,
-          uploaded_date: new Date().toISOString(),
+          storage_path: filePath,
+          file_name: file.name
         }]);
 
       if (dbError) throw dbError;

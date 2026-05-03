@@ -29,7 +29,7 @@ export default function SubjectPage() {
       const { data, error } = await supabase
         .from('materials_with_subjects')
         .select('*')
-        .ilike('subject_code', subjectCode)
+        .ilike('subject_id', subjectCode)
         .eq('material_type', activeTab)
         .order('unit_number', { ascending: true });
 

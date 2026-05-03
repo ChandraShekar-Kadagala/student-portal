@@ -1,12 +1,22 @@
 import { FileText, Download, Calendar } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export default function FileCard({ material }) {
-  const handleDownload = () => {
-    // Assuming pdf_url is a direct link or Supabase storage public URL
-    window.open(material.pdf_url, '_blank');
+  const handleDownload = async () => {
+    if (material.storage_path) {
+      const { data, error } = await supabase.storage
+        .from('study-materials')
+        .createSignedUrl(material.storage_path, 60); // URL valid for 60 seconds
+
+      if (!error && data?.signedUrl) {
+        window.open(data.signedUrl, '_blank');
+      } else {
+        console.error('Error generating signed URL:', error);
+      }
+    }
   };
 
-  const formattedDate = new Date(material.uploaded_date || Date.now()).toLocaleDateString('en-US', {
+  const formattedDate = new Date(material.created_at || Date.now()).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'
