@@ -5,7 +5,6 @@ import { supabase } from './lib/supabase';
 // Pages
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Dashboard from './pages/Dashboard';
 import SubjectPage from './pages/SubjectPage';
 import AdminPanel from './pages/AdminPanel';
 import PdfViewerPage from './pages/PdfViewerPage';
