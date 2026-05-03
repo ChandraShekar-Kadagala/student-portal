@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { LogOut, BookOpen, Shield, Menu, X, UserCircle } from 'lucide-react';
+import { LogOut, BookOpen, Shield, Menu, X, UserCircle, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Layout({ session }) {
   const [role, setRole] = useState('student');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     async function getProfile() {
@@ -84,14 +86,21 @@ export default function Layout({ session }) {
               })}
             </div>
 
-            <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700 bg-slate-100/50 px-3 py-1.5 rounded-full border border-slate-200/50">
+            <div className="flex items-center gap-4 border-l border-slate-200 dark:border-slate-700 pl-6">
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:text-blue-400 dark:hover:bg-slate-800 rounded-full transition-all duration-300"
+                title="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-200/50 dark:border-slate-700/50">
                 <UserCircle size={18} className="text-primary-500" />
                 <span>{session?.user?.email?.split('@')[0]}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 group"
+                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-all duration-300 group"
                 title="Logout"
               >
                 <LogOut size={20} className="group-hover:scale-110 transition-transform" />
@@ -134,10 +143,17 @@ export default function Layout({ session }) {
                   {link.name}
                 </Link>
               ))}
-              <div className="h-px bg-slate-100 my-2"></div>
+              <div className="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-3 p-3 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 w-full text-left"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </button>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-3 p-3 rounded-xl font-medium text-red-500 hover:bg-red-50 w-full text-left"
+                className="flex items-center gap-3 p-3 rounded-xl font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 w-full text-left"
               >
                 <LogOut size={20} />
                 Logout

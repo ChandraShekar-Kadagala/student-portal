@@ -10,6 +10,7 @@ import AdminPanel from './pages/AdminPanel';
 
 // Components
 import Layout from './components/Layout';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -39,15 +40,17 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/login" element={!session ? <Login /> : <Navigate to="/" />} />
-      
-      <Route path="/" element={session ? <Layout session={session} /> : <Navigate to="/login" />}>
-        <Route index element={<Dashboard session={session} />} />
-        <Route path="subject/:subjectCode" element={<SubjectPage />} />
-        <Route path="admin" element={<AdminPanel session={session} />} />
-      </Route>
-    </Routes>
+    <ThemeProvider>
+      <Routes>
+        <Route path="/login" element={!session ? <Login /> : <Navigate to="/" />} />
+        
+        <Route path="/" element={session ? <Layout session={session} /> : <Navigate to="/login" />}>
+          <Route index element={<Dashboard session={session} />} />
+          <Route path="subject/:subjectCode" element={<SubjectPage />} />
+          <Route path="admin" element={<AdminPanel session={session} />} />
+        </Route>
+      </Routes>
+    </ThemeProvider>
   );
 }
 
