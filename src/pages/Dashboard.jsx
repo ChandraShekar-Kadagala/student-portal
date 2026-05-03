@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Database, Code2, LineChart, BrainCircuit, Calculator, ArrowRight } from 'lucide-react';
 
 const subjects = [
-  { code: 'MATH', name: 'Mathematics', icon: Calculator, color: 'from-violet-500 to-purple-500', bg: 'bg-violet-50' },
-  { code: 'DSA', name: 'Data Structures', icon: Database, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
-  { code: 'CPP', name: 'OOPs C++', icon: Code2, color: 'from-fuchsia-500 to-pink-500', bg: 'bg-fuchsia-50' },
-  { code: 'APT', name: 'Aptitude', icon: BrainCircuit, color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50' },
-  { code: 'ECO', name: 'Economics', icon: LineChart, color: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-50' },
+  { code: 'MA201', name: 'Mathematics', icon: Calculator, color: 'from-violet-500 to-purple-500', bg: 'bg-violet-50' },
+  { code: 'CS201', name: 'Data Structures', icon: Database, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
+  { code: 'CS202', name: 'OOPs C++', icon: Code2, color: 'from-fuchsia-500 to-pink-500', bg: 'bg-fuchsia-50' },
+  { code: 'HS202', name: 'Aptitude', icon: BrainCircuit, color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50' },
+  { code: 'HSS201', name: 'Economics', icon: LineChart, color: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-50' },
 ];
 
 export default function Dashboard({ session }) {

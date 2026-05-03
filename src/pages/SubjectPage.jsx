@@ -9,11 +9,11 @@ import clsx from 'clsx';
 const TABS = ['Unit Notes', 'Questions', 'Last Minute'];
 
 const subjectNames = {
-  math: 'Mathematics',
-  dsa: 'Data Structures',
-  cpp: 'OOPs C++',
-  apt: 'Aptitude',
-  eco: 'Economics',
+  ma201: 'Mathematics',
+  cs201: 'Data Structures',
+  cs202: 'OOPs C++',
+  hs202: 'Aptitude',
+  hss201: 'Economics',
 };
 
 export default function SubjectPage() {
@@ -30,7 +30,7 @@ export default function SubjectPage() {
       const { data, error } = await supabase
         .from('materials_with_subjects')
         .select('*')
-        .ilike('subject_id', subjectCode)
+        .ilike('code', subjectCode)
         .eq('material_type', activeTab)
         .order('unit_number', { ascending: true });
 

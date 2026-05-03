@@ -76,7 +76,7 @@ export default function AdminPanel({ session }) {
       const { data: subjectData, error: subjectError } = await supabase
         .from('subjects')
         .select('id')
-        .ilike('subject_code', subjectCode)
+        .ilike('code', subjectCode)
         .single();
 
       if (subjectError || !subjectData) {
