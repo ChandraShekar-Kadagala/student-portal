@@ -54,10 +54,8 @@ export default function Layout({ session }) {
           className="glass-panel max-w-7xl mx-auto px-6 py-3 flex justify-between items-center"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
-              <BookOpen size={20} strokeWidth={2.5} />
-            </div>
-            <span className="text-xl font-bold text-slate-800 tracking-tight">Study<span className="text-gradient">Hub</span></span>
+            <img src="/logo.png" alt="Comrades Logo" className="w-10 h-10 rounded-full shadow-lg shadow-primary-500/30 object-cover border-2 border-primary-500/20" />
+            <span className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Study<span className="text-gradient">Hub</span></span>
           </div>
 
           {/* Desktop Nav */}
@@ -177,6 +175,14 @@ export default function Layout({ session }) {
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
         <Outlet />
       </main>
+
+      <footer className="w-full mt-auto py-6 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            Drafted by <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Chandra Shekar Kadagala</span>
+          </p>
+        </div>
+      </footer>
 
       <CommandPalette />
     </div>
