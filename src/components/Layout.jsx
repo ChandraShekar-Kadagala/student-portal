@@ -176,10 +176,10 @@ export default function Layout({ session }) {
         <Outlet />
       </main>
 
-      <footer className="w-full mt-auto py-6 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-            Drafted by <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Chandra Shekar Kadagala</span>
+      <footer className="w-full mt-auto py-6">
+        <div className="max-w-7xl mx-auto px-4 flex justify-center items-center">
+          <p className="text-sm font-medium text-slate-400 dark:text-slate-500">
+            Drafted by <span className="font-bold text-slate-500 dark:text-slate-400">Chandra Shekar Kadagala</span>
           </p>
         </div>
       </footer>
