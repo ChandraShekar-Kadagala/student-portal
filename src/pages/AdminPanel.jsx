@@ -72,11 +72,22 @@ export default function AdminPanel({ session }) {
 
       if (uploadError) throw uploadError;
 
-      // 2. Insert into Database
+      // 2. Get the Subject UUID from the subjects table
+      const { data: subjectData, error: subjectError } = await supabase
+        .from('subjects')
+        .select('id')
+        .ilike('subject_code', subjectCode)
+        .single();
+
+      if (subjectError || !subjectData) {
+        throw new Error(`Invalid Subject Code. Ensure '${subjectCode.toUpperCase()}' exists in your subjects table.`);
+      }
+
+      // 3. Insert into Database
       const { error: dbError } = await supabase
         .from('materials')
         .insert([{
-          subject_id: subjectCode.toUpperCase(),
+          subject_id: subjectData.id,
           title: file.name.split('.').slice(0, -1).join('.'), // title without extension
           material_type: materialType,
           unit_number: unitNumber ? parseInt(unitNumber) : null,
