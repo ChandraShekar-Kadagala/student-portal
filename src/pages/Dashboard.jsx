@@ -2,6 +2,9 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Database, Code2, LineChart, BrainCircuit, Calculator, ArrowRight } from 'lucide-react';
 
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+
 const subjects = [
   { code: 'MA201', name: 'Mathematics', icon: Calculator, color: 'from-violet-500 to-purple-500', bg: 'bg-violet-50' },
   { code: 'CS201', name: 'Data Structures', icon: Database, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
@@ -11,7 +14,48 @@ const subjects = [
 ];
 
 export default function Dashboard({ session }) {
+  const [progressData, setProgressData] = useState({});
   const username = session?.user?.email?.split('@')[0] || 'Student';
+
+  useEffect(() => {
+    async function loadProgress() {
+      if (!session?.user) return;
+
+      try {
+        // Fetch all materials to count total per subject
+        const { data: materials } = await supabase
+          .from('materials_with_subjects')
+          .select('id, code');
+        
+        // Fetch user's mastered materials
+        const { data: mastered } = await supabase
+          .from('user_progress')
+          .select('material_id')
+          .eq('user_id', session.user.id);
+        
+        if (materials && mastered) {
+          const masteredSet = new Set(mastered.map(m => m.material_id));
+          const progressMap = {};
+          
+          // Calculate counts
+          subjects.forEach(sub => {
+            const subjectMaterials = materials.filter(m => m.code === sub.code);
+            const total = subjectMaterials.length;
+            const completed = subjectMaterials.filter(m => masteredSet.has(m.id)).length;
+            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            progressMap[sub.code] = { total, completed, percent };
+          });
+          
+          setProgressData(progressMap);
+        }
+      } catch (error) {
+        console.error('Error calculating progress:', error);
+      }
+    }
+
+    loadProgress();
+  }, [session]);
 
   const container = {
     hidden: { opacity: 0 },
@@ -75,10 +119,31 @@ export default function Dashboard({ session }) {
                       </div>
                     </div>
                     <h3 className="text-2xl font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors">{subject.name}</h3>
-                    <p className="text-slate-500 text-sm font-medium">{subject.code} • Premium Materials</p>
+                    <p className="text-slate-500 text-sm font-medium mb-4">{subject.code} • Premium Materials</p>
+                    
+                    {/* Progress Bar */}
+                    {progressData[subject.code] && (
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-xs font-semibold">
+                          <span className="text-slate-500">Progress</span>
+                          <span className={`text-${subject.color.split(' ')[1].split('-')[1]}-600`}>{progressData[subject.code].percent}%</span>
+                        </div>
+                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <motion.div 
+                            className={`h-full bg-gradient-to-r ${subject.color}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progressData[subject.code].percent}%` }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                          />
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium pt-1 text-right">
+                          {progressData[subject.code].completed} of {progressData[subject.code].total} mastered
+                        </p>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between text-sm font-semibold text-primary-600 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                  <div className="mt-6 flex items-center justify-between text-sm font-semibold text-primary-600 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                     <span>Explore Course</span>
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </div>

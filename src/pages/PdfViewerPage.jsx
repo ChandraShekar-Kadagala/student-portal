@@ -10,8 +10,14 @@ export default function PdfViewerPage() {
   const [material, setMaterial] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMastered, setIsMastered] = useState(false);
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+  }, []);
     async function loadMaterial() {
       try {
         const { data, error } = await supabase
@@ -32,6 +38,20 @@ export default function PdfViewerPage() {
         if (urlError) throw urlError;
         setPdfUrl(urlData.signedUrl);
 
+        // Check if mastered
+        if (session?.user) {
+          const { data: progressData } = await supabase
+            .from('user_progress')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('material_id', materialId)
+            .single();
+          
+          if (progressData) {
+            setIsMastered(true);
+          }
+        }
+
       } catch (err) {
         console.error('Error loading material:', err);
       } finally {
@@ -42,7 +62,33 @@ export default function PdfViewerPage() {
     if (materialId) {
       loadMaterial();
     }
-  }, [materialId]);
+  }, [materialId, session]);
+
+  const handleToggleMastery = async () => {
+    if (!session?.user) return;
+    
+    try {
+      if (isMastered) {
+        // Unmark
+        await supabase
+          .from('user_progress')
+          .delete()
+          .eq('user_id', session.user.id)
+          .eq('material_id', materialId);
+        setIsMastered(false);
+      } else {
+        // Mark as mastered
+        await supabase
+          .from('user_progress')
+          .insert([
+            { user_id: session.user.id, material_id: materialId }
+          ]);
+        setIsMastered(true);
+      }
+    } catch (error) {
+      console.error('Error toggling mastery:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -83,6 +129,17 @@ export default function PdfViewerPage() {
               </p>
             </div>
           </div>
+          
+          <button
+            onClick={handleToggleMastery}
+            className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 ${
+              isMastered 
+                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 shadow-inner'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm'
+            }`}
+          >
+            {isMastered ? '✨ Mastered' : 'Mark as Mastered'}
+          </button>
         </div>
 
         {/* PDF Iframe Container */}
