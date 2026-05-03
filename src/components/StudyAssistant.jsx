@@ -28,22 +28,14 @@ export default function StudyAssistant({ contextTitle }) {
     setIsLoading(true);
 
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-      
-      if (!apiKey) {
-        throw new Error("API key not configured in Netlify.");
-      }
-
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
+          contextTitle: contextTitle,
           messages: [
-            { role: 'system', content: `You are an expert tutor helping a university student study "${contextTitle}". Be concise, encouraging, and extremely clear.` },
             ...messages.map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.content })),
             { role: 'user', content: userMessage }
           ]
