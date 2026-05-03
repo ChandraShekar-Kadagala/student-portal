@@ -48,6 +48,7 @@ function App() {
         <Route path="/" element={session ? <Layout session={session} /> : <Navigate to="/login" />}>
           <Route index element={<Dashboard session={session} />} />
           <Route path="subject/:subjectCode" element={<SubjectPage />} />
+          <Route path="read/:materialId" element={<PdfViewerPage />} />
           <Route path="admin" element={<AdminPanel session={session} />} />
         </Route>
       </Routes>
