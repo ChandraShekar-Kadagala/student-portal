@@ -130,6 +130,7 @@ export default function PdfViewerPage() {
                 {material.code} • {material.material_type} {material.unit_number ? `• Unit ${material.unit_number}` : ''}
               </p>
             </div>
+          </div>
           <div className="flex gap-3">
             {pdfUrl && (
               <a
