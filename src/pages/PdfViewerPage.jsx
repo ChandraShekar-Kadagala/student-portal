@@ -130,18 +130,29 @@ export default function PdfViewerPage() {
                 {material.code} • {material.material_type} {material.unit_number ? `• Unit ${material.unit_number}` : ''}
               </p>
             </div>
+          <div className="flex gap-3">
+            {pdfUrl && (
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-xl text-sm font-bold bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/60 shadow-sm flex items-center gap-2 transition-all duration-300"
+              >
+                Open Native
+              </a>
+            )}
+            
+            <button
+              onClick={handleToggleMastery}
+              className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 ${
+                isMastered 
+                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 shadow-inner'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm'
+              }`}
+            >
+              {isMastered ? '✨ Mastered' : 'Mark as Mastered'}
+            </button>
           </div>
-          
-          <button
-            onClick={handleToggleMastery}
-            className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all duration-300 ${
-              isMastered 
-                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 shadow-inner'
-                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm'
-            }`}
-          >
-            {isMastered ? '✨ Mastered' : 'Mark as Mastered'}
-          </button>
         </div>
 
         {/* PDF Iframe Container */}
