@@ -67,14 +67,14 @@ export default function AdminPanel({ session }) {
       const filePath = `${subjectCode.toLowerCase()}/${fileName}`;
 
       const { error: uploadError, data: uploadData } = await supabase.storage
-        .from('materials')
+        .from('study-materials')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       // 2. Get Public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('materials')
+        .from('study-materials')
         .getPublicUrl(filePath);
 
       // 3. Insert into Database
