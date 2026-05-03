@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, User, Lock, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function Login() {
-  const [regNo, setRegNo] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,11 +14,14 @@ export default function Login() {
     setLoading(true);
     setError(null);
     
-    // Map Registration Number to a dummy email format as requested
-    const dummyEmail = `${regNo.trim().toLowerCase()}@student.com`;
+    let loginEmail = identifier.trim().toLowerCase();
+    // If the user didn't enter an @ symbol, assume it's a Registration Number and map it
+    if (!loginEmail.includes('@')) {
+      loginEmail = `${loginEmail}@student.com`;
+    }
 
     const { error } = await supabase.auth.signInWithPassword({
-      email: dummyEmail,
+      email: loginEmail,
       password: password,
     });
 
@@ -71,7 +74,7 @@ export default function Login() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Registration Number</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Registration Number or Email</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary-500 transition-colors">
                     <User size={18} />
@@ -79,10 +82,10 @@ export default function Login() {
                   <input
                     type="text"
                     required
-                    value={regNo}
-                    onChange={(e) => setRegNo(e.target.value)}
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
                     className="w-full pl-11 pr-4 py-3.5 bg-white/80 border border-slate-200/60 rounded-xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 focus:bg-white outline-none transition-all text-slate-700 shadow-sm font-medium placeholder:text-slate-400 placeholder:font-normal"
-                    placeholder="e.g. 21BCE1234"
+                    placeholder="e.g. 21BCE1234 or student@portal.com"
                   />
                 </div>
               </div>
