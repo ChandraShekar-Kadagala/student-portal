@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { LogOut, BookOpen, Shield, Menu, X, UserCircle, Sun, Moon } from 'lucide-react';
+import { LogOut, BookOpen, Shield, Menu, X, UserCircle, Sun, Moon, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import CommandPalette from './CommandPalette';
 
 export default function Layout({ session }) {
   const [role, setRole] = useState('student');
@@ -88,6 +89,16 @@ export default function Layout({ session }) {
 
             <div className="flex items-center gap-4 border-l border-slate-200 dark:border-slate-700 pl-6">
               <button
+                onClick={() => window.dispatchEvent(new Event('open-command-palette'))}
+                className="p-2 text-slate-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:text-primary-400 dark:hover:bg-slate-800 rounded-full transition-all duration-300 flex items-center gap-2"
+                title="Search (Ctrl+K)"
+              >
+                <Search size={20} />
+                <span className="hidden lg:flex items-center gap-1 text-xs font-semibold bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+                  Ctrl K
+                </span>
+              </button>
+              <button
                 onClick={toggleTheme}
                 className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:text-blue-400 dark:hover:bg-slate-800 rounded-full transition-all duration-300"
                 title="Toggle Dark Mode"
@@ -166,6 +177,8 @@ export default function Layout({ session }) {
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
         <Outlet />
       </main>
+
+      <CommandPalette />
     </div>
   );
 }
